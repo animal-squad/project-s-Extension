@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Simple Button Extension",
+  "name": "Link Bucket Extension",
   "version": "1.0",
-  "description": "A simple Chrome extension with a button.",
+  "description": "링킷으로 수많은 탭을 손쉽게 관리해보세요!",
   "action": {
     "default_popup": "popup.html"
   },
