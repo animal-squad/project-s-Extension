@@ -7,22 +7,21 @@ body {
   align-items: center;
   font-family: "Pretendard-Regular", -apple-system, BlinkMacSystemFont, Roboto,
     "Segoe UI", "Microsoft Sans Serif", sans-serif;
-  height: 380px; /* 원하는 높이 */
-  width: 300px; /* 원하는 너비 */
+  height: 380px; 
+  width: 300px; 
 }
 
-/* 고정된 헤더 스타일 */
 .title-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px; /* 내부 여백 */
-  background-color: #f5f5f5; /* 헤더 배경색 */
-  position: fixed; /* 상단에 고정 */
-  top: 0; /* 상단에서 0 위치 */
+  padding: 10px; 
+  background-color: #f5f5f5; 
+  position: fixed; /* 고정 위치 */
+  top: 0; 
   left: 0;
-  z-index: 1000; /* 다른 요소 위로 올라오도록 z-index 설정 */
+  z-index: 1000; /* 맨 앞에 배치 */
 }
 
 .link_bucket_title {
@@ -122,7 +121,7 @@ input:checked + .slider:before {
 
 .input-field,
 .textarea-field {
-  width: 100%; /* 부모 요소의 너비를 사용 */
+  width: 100%; /* 부모 요소 너비 사용 */
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -131,8 +130,8 @@ input:checked + .slider:before {
 }
 
 .textarea-field {
-  height: 200px; /* 메모 칸의 기본 높이 */
-  resize: none; /* 사용자가 크기를 조정할 수 없도록 설정 */
+  height: 200px; 
+  resize: none; 
 }
 
 @font-face {
