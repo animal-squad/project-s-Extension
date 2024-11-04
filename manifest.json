@@ -6,8 +6,6 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "permissions": [],
-  "host_permissions": [
-    "https://animal-squad.uk/*"
-  ]
+  "permissions": ["tabs", "identity", "identity.email"],
+  "host_permissions": ["https://animal-squad.uk/*"]
 }
