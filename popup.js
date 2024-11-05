@@ -11,7 +11,6 @@ toggleButton.addEventListener("change", () => {
   isSavingCurrentTab = !isSavingCurrentTab;
 });
 
-// 저장 버튼 (submitButton) 클릭 시 이벤트 추가
 submitButton.addEventListener("click", async () => {
   try {
     const titleText = textInput.value;
@@ -27,8 +26,14 @@ submitButton.addEventListener("click", async () => {
         return;
       }
 
-      const email = info.email;  
+      const email = info.email;
       console.log("User Email:", email);
+    });
+
+    // 배경 스크립트에 메시지 보내기
+    chrome.runtime.sendMessage({
+      action: "saveTabs",
+      saveCurrentTab: isSavingCurrentTab,
     });
   } catch (error) {
     console.error("버튼 클릭 중 오류 발생:", error);
