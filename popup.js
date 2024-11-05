@@ -1,7 +1,6 @@
 const toggleButton = document.getElementById("toggleButton");
 const submitButton = document.getElementById("submitButton");
 const textInput = document.getElementById("textInput");
-const textArea = document.getElementById("textArea");
 
 // 초기화
 let isSavingCurrentTab = true;
@@ -14,10 +13,8 @@ toggleButton.addEventListener("change", () => {
 submitButton.addEventListener("click", async () => {
   try {
     const titleText = textInput.value;
-    const memoText = textArea.value;
 
     console.log("제목:", titleText);
-    console.log("메모:", memoText);
     console.log(isSavingCurrentTab ? "현재 탭 저장" : "모든 탭 저장");
 
     chrome.identity.getProfileUserInfo((info) => {
