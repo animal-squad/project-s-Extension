@@ -21,8 +21,10 @@ submitButton.addEventListener("click", async () => {
     const info = await new Promise((resolve, reject) => {
       chrome.identity.getProfileUserInfo((info) => {
         if (chrome.runtime.lastError) {
+          console.error("프로필 정보 요청 오류:", chrome.runtime.lastError);
           reject("Error getting user info: " + chrome.runtime.lastError);
         } else {
+          console.log("프로필 정보:", info);
           resolve(info);
         }
       });
@@ -35,8 +37,13 @@ submitButton.addEventListener("click", async () => {
       return;
     }
 
+    // 현재 창의 ID를 가져와 그 창에 속한 탭만 쿼리
+    const windowId = await new Promise((resolve) => {
+      chrome.windows.getCurrent((window) => resolve(window.id));
+    });
+
     const tabs = await new Promise((resolve) => {
-      chrome.tabs.query({}, (tabs) => resolve(tabs));
+      chrome.tabs.query({ windowId }, (tabs) => resolve(tabs));
     });
 
     const selectedTabs = isSavingCurrentTab
@@ -83,7 +90,7 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     const response = await fetch(
-      "https://www.link-bucket.animal-squad.uk/api/bucket",
+      "http://www.link-bucket.animal-squad.uk/api/bucket", // https://www.link-bucket.animal-squad.uk/api/bucket
       {
         method: "POST",
         headers: {
@@ -105,7 +112,6 @@ submitButton.addEventListener("click", async () => {
 
     const result = await response.json();
     console.log("응답 데이터:", result);
-
   } catch (error) {
     console.error("저장 중 오류 발생:", error);
   } finally {
