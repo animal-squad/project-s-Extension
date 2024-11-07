@@ -83,7 +83,7 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     const response = await fetch(
-      "https://www.link-bucket.animal-squad.uk/api/save",
+      "https://www.link-bucket.animal-squad.uk/api/bucket",
       {
         method: "POST",
         headers: {
