@@ -72,7 +72,7 @@ submitButton.addEventListener("click", async () => {
                 } else {
                   resolve({
                     URL: tab.url,
-                    content: result[0]?.result || "",
+                    content: "", // content: result[0]?.result || "",
                   });
                 }
               }
@@ -90,7 +90,7 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     const response = await fetch(
-      "http://www.link-bucket.animal-squad.uk/api/bucket", // https://www.link-bucket.animal-squad.uk/api/bucket
+      "https://www.link-bucket.animal-squad.uk/api/bucket", // https://www.link-bucket.animal-squad.uk/api/bucket
       {
         method: "POST",
         headers: {
