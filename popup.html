@@ -1,12 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Simple Button</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <button id="clickButton">Click Me</button>
-  <script src="popup.js"></script>
-</body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Link Bucket Extension</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="title-container">
+      <span class="link_bucket_title">🧩 링킷</span>
+      <button id="submitButton" class="button">저장</button>
+    </div>
+    <div class="toggle-container">
+      <span class="toggle-label">현재 탭 저장</span>
+      <label class="switch">
+        <input type="checkbox" id="toggleButton" />
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-label">모든 탭 저장</span>
+    </div>
+    <div class="title-text-container">
+      <input
+        type="text"
+        id="textInput"
+        class="input-field"
+        placeholder="제목"
+      />
+    </div>
+    <script src="popup.js"></script>
+  </body>
 </html>
