@@ -10,9 +10,9 @@ chrome.tabs.query({}, (tabs) => {
       (result) => {
         if (chrome.runtime.lastError) {
           // 스크립팅이 실패한 경우
-          console.error(
-            `탭 ${tab.id}에서 스크립팅 실패: ${chrome.runtime.lastError.message}`
-          );
+          // console.error(
+          //   `탭 ${tab.id}에서 스크립팅 실패: ${chrome.runtime.lastError.message}`
+          // );
           chrome.runtime.sendMessage({
             tabId: tab.id,
             html: "Scripting Failed",
