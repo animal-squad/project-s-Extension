@@ -26,6 +26,12 @@ allTabsButton.addEventListener("click", () => {
 });
 
 submitButton.addEventListener("click", async () => {
+  if (submitButton.innerText === "링킷 홈페이지") {
+    // 버튼이 이미 변경된 경우, 기존 저장 기능 방지
+    window.open("https://link-bucket.animal-squad.uk/", "_blank");
+    return;
+  }
+
   // 버튼 비활성화
   submitButton.disabled = true;
   submitButton.innerText = "저장 중...";
@@ -131,11 +137,20 @@ submitButton.addEventListener("click", async () => {
       submitButton.style.backgroundColor = "#41A332";
       submitButton.style.color = "white";
 
+      // 1초 후 버튼 업데이트
       setTimeout(() => {
-        submitButton.innerText = "저장";
-        submitButton.style.backgroundColor = "";
-        submitButton.style.color = "";
-      }, 2000);
+        submitButton.innerText = "링킷 홈페이지";
+        submitButton.style.backgroundColor = "#FFD700"; // 노란색
+        submitButton.style.color = "#000"; // 검정색 글자
+        submitButton.disabled = false;
+
+        // 기존 이벤트 방지
+        submitButton.replaceWith(submitButton.cloneNode(true));
+        const newButton = document.getElementById("submitButton");
+        newButton.addEventListener("click", () => {
+          window.open("https://link-bucket.animal-squad.uk/", "_blank");
+        });
+      }, 1000);
     } else {
       console.error("저장 실패:", responseText);
       submitButton.innerText = "저장";
