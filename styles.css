@@ -7,7 +7,7 @@ body {
   align-items: center;
   font-family: "Pretendard-Regular", -apple-system, BlinkMacSystemFont, Roboto,
     "Segoe UI", "Microsoft Sans Serif", sans-serif;
-  height: 180px;
+  height: 210px;
   width: 300px;
 }
 
@@ -173,4 +173,24 @@ body {
 /* Hover State */
 .toggle-button:hover {
   background-color: #e0e0e0;
+}
+
+.link-home-container {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  text-align: center;
+  top : 170px;
+}
+
+.link-homepage {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.link-homepage:hover {
+  text-decoration: underline;
 }
