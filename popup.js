@@ -90,7 +90,7 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     const response = await fetch(
-      "https://www.link-bucket.animal-squad.uk/api/bucket", // https://www.link-bucket.animal-squad.uk/api/bucket
+      "https://www.link-bucket.animal-squad.uk/api/bucket",
       {
         method: "POST",
         headers: {
@@ -102,6 +102,9 @@ submitButton.addEventListener("click", async () => {
 
     console.log("Status Code:", response.status);
 
+    const responseText = await response.text(); // 응답을 텍스트로 받음
+    console.log("응답 원문 데이터:", responseText);
+
     if (response.status === 401) {
       alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
       chrome.tabs.create({
@@ -110,13 +113,27 @@ submitButton.addEventListener("click", async () => {
       return;
     }
 
-    const result = await response.json();
-    console.log("응답 데이터:", result);
+    if (response.status === 201) {
+      // 저장 성공
+      submitButton.innerText = "저장 완료";
+      submitButton.style.backgroundColor = "#41A332"; // 초록색으로 변경
+      submitButton.style.color = "white";
+
+      // 2초 후 원래 상태로 복원
+      setTimeout(() => {
+        submitButton.innerText = "저장";
+        submitButton.style.backgroundColor = ""; // 원래 색상으로 복원
+        submitButton.style.color = "";
+      }, 2000);
+    } else {
+      // 저장 실패 (초기 상태로 복원)
+      console.error("저장 실패:", responseText);
+      submitButton.innerText = "저장";
+    }
   } catch (error) {
-    console.error("저장 중 오류 발생:", error);
+    console.error("오류 발생:", error); // 오류 로그
   } finally {
-    // 버튼 활성화 및 원래 텍스트로 복원
+    // 버튼 활성화
     submitButton.disabled = false;
-    submitButton.innerText = "저장";
   }
 });
