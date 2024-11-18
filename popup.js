@@ -1,19 +1,40 @@
-const toggleButton = document.getElementById("toggleButton");
 const submitButton = document.getElementById("submitButton");
 const textInput = document.getElementById("textInput");
+const currentTabButton = document.getElementById("currentTabButton");
+const allTabsButton = document.getElementById("allTabsButton");
 
 // 초기화
 let isSavingCurrentTab = true;
 
-// 슬라이드 토글 버튼 클릭 시 이벤트 추가
-toggleButton.addEventListener("change", () => {
-  isSavingCurrentTab = !isSavingCurrentTab;
+// 버튼 활성 상태 관리 함수
+const toggleActiveState = (activate, deactivate) => {
+  activate.classList.add("active");
+  deactivate.classList.remove("active");
+};
+
+// 버튼 클릭 이벤트 설정
+currentTabButton.addEventListener("click", () => {
+  isSavingCurrentTab = true;
+  toggleActiveState(currentTabButton, allTabsButton);
+  console.log("현재 탭 저장 모드");
+});
+
+allTabsButton.addEventListener("click", () => {
+  isSavingCurrentTab = false;
+  toggleActiveState(allTabsButton, currentTabButton);
+  console.log("모든 탭 저장 모드");
 });
 
 submitButton.addEventListener("click", async () => {
+  if (submitButton.innerText === "링킷 홈페이지") {
+    // 버튼이 이미 변경된 경우, 기존 저장 기능 방지
+    window.open("https://link-bucket.animal-squad.uk/", "_blank");
+    return;
+  }
+
   // 버튼 비활성화
   submitButton.disabled = true;
-  submitButton.innerText = "저장 중..."; // 사용자에게 저장 중이라는 메시지를 표시
+  submitButton.innerText = "저장 중...";
 
   try {
     const titleText = textInput.value;
@@ -37,7 +58,6 @@ submitButton.addEventListener("click", async () => {
       return;
     }
 
-    // 현재 창의 ID를 가져와 그 창에 속한 탭만 쿼리
     const windowId = await new Promise((resolve) => {
       chrome.windows.getCurrent((window) => resolve(window.id));
     });
@@ -50,7 +70,6 @@ submitButton.addEventListener("click", async () => {
       ? [tabs.find((tab) => tab.active)]
       : tabs.slice(0, 10);
 
-    // HTML 콘텐츠 수집, 실패한 경우 빈 문자열 설정
     const links = await Promise.all(
       selectedTabs.map(
         (tab) =>
@@ -67,12 +86,12 @@ submitButton.addEventListener("click", async () => {
                   );
                   resolve({
                     URL: tab.url,
-                    content: "", // 실패한 경우 빈 문자열로 설정
+                    content: "",
                   });
                 } else {
                   resolve({
                     URL: tab.url,
-                    content: "", // content: result[0]?.result || "",
+                    content: "",
                   });
                 }
               }
@@ -102,7 +121,7 @@ submitButton.addEventListener("click", async () => {
 
     console.log("Status Code:", response.status);
 
-    const responseText = await response.text(); // 응답을 텍스트로 받음
+    const responseText = await response.text();
     console.log("응답 원문 데이터:", responseText);
 
     if (response.status === 401) {
@@ -114,26 +133,31 @@ submitButton.addEventListener("click", async () => {
     }
 
     if (response.status === 201) {
-      // 저장 성공
       submitButton.innerText = "저장 완료";
-      submitButton.style.backgroundColor = "#41A332"; // 초록색으로 변경
+      submitButton.style.backgroundColor = "#41A332";
       submitButton.style.color = "white";
 
-      // 2초 후 원래 상태로 복원
+      // 1초 후 버튼 업데이트
       setTimeout(() => {
-        submitButton.innerText = "저장";
-        submitButton.style.backgroundColor = ""; // 원래 색상으로 복원
-        submitButton.style.color = "";
-      }, 2000);
+        submitButton.innerText = "링킷 홈페이지";
+        submitButton.style.backgroundColor = "#FFD700"; // 노란색
+        submitButton.style.color = "#000"; // 검정색 글자
+        submitButton.disabled = false;
+
+        // 기존 이벤트 방지
+        submitButton.replaceWith(submitButton.cloneNode(true));
+        const newButton = document.getElementById("submitButton");
+        newButton.addEventListener("click", () => {
+          window.open("https://link-bucket.animal-squad.uk/", "_blank");
+        });
+      }, 1000);
     } else {
-      // 저장 실패 (초기 상태로 복원)
       console.error("저장 실패:", responseText);
       submitButton.innerText = "저장";
     }
   } catch (error) {
-    console.error("오류 발생:", error); // 오류 로그
+    console.error("오류 발생:", error);
   } finally {
-    // 버튼 활성화
     submitButton.disabled = false;
   }
 });
