@@ -2,15 +2,27 @@ const submitButton = document.getElementById("submitButton");
 const textInput = document.getElementById("textInput");
 const currentTabButton = document.getElementById("currentTabButton");
 const allTabsButton = document.getElementById("allTabsButton");
+const closeTabsButton = document.getElementById("closeTabsCheckbox");
 
 // 초기화
 let isSavingCurrentTab = true;
+let isClosingTab = false;
 
 // 버튼 활성 상태 관리 함수
 const toggleActiveState = (activate, deactivate) => {
   activate.classList.add("active");
   deactivate.classList.remove("active");
 };
+
+closeTabsButton.addEventListener("click", () => {
+  if (isClosingTab) {
+    isClosingTab = false;
+    console.log("탭 닫지 않기");
+  } else {
+    isClosingTab = true;
+    console.log("탭 닫기");
+  }
+});
 
 // 버튼 클릭 이벤트 설정
 currentTabButton.addEventListener("click", () => {
@@ -27,12 +39,10 @@ allTabsButton.addEventListener("click", () => {
 
 submitButton.addEventListener("click", async () => {
   if (submitButton.innerText === "링킷 홈페이지") {
-    // 버튼이 이미 변경된 경우, 기존 저장 기능 방지
     window.open("https://link-bucket.animal-squad.uk/", "_blank");
     return;
   }
 
-  // 버튼 비활성화
   submitButton.disabled = true;
   submitButton.innerText = "저장 중...";
 
@@ -70,35 +80,10 @@ submitButton.addEventListener("click", async () => {
       ? [tabs.find((tab) => tab.active)]
       : tabs.slice(0, 10);
 
-    const links = await Promise.all(
-      selectedTabs.map(
-        (tab) =>
-          new Promise((resolve) => {
-            chrome.scripting.executeScript(
-              {
-                target: { tabId: tab.id },
-                func: () => document.documentElement.outerHTML,
-              },
-              (result) => {
-                if (chrome.runtime.lastError) {
-                  console.warn(
-                    `탭 ${tab.id}에서 HTML 콘텐츠 가져오기 실패: ${chrome.runtime.lastError.message}`
-                  );
-                  resolve({
-                    URL: tab.url,
-                    content: "",
-                  });
-                } else {
-                  resolve({
-                    URL: tab.url,
-                    content: "",
-                  });
-                }
-              }
-            );
-          })
-      )
-    );
+    const links = selectedTabs.map((tab) => ({
+      URL: tab.url,
+      content: "", // 간단히 URL만 포함
+    }));
 
     const data = {
       title: titleText || null,
@@ -108,6 +93,7 @@ submitButton.addEventListener("click", async () => {
 
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
+    // 데이터 전송
     const response = await fetch(
       "https://www.link-bucket.animal-squad.uk/api/bucket",
       {
@@ -136,6 +122,22 @@ submitButton.addEventListener("click", async () => {
       submitButton.innerText = "저장 완료";
       submitButton.style.backgroundColor = "#41A332";
       submitButton.style.color = "white";
+
+      if (isClosingTab) {
+        const tabIdsToClose = selectedTabs.map((tab) => tab.id);
+        chrome.tabs.remove(tabIdsToClose, () => {
+          console.log("사용된 탭이 요청 후 닫혔습니다.");
+        });
+      }
+      // 1. 링크 열기
+      const newTab = await new Promise((resolve) => {
+        chrome.tabs.create(
+          { url: "https://link-bucket.animal-squad.uk/" },
+          (tab) => resolve(tab)
+        );
+      });
+
+      console.log("링킷 홈페이지로 새 탭 열림:", newTab);
 
       // 1초 후 버튼 업데이트
       setTimeout(() => {
