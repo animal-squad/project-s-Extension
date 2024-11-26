@@ -7,7 +7,7 @@ body {
   align-items: center;
   font-family: "Pretendard-Regular", -apple-system, BlinkMacSystemFont, Roboto,
     "Segoe UI", "Microsoft Sans Serif", sans-serif;
-  height: 170px;
+  height: 210px;
   width: 300px;
 }
 
@@ -45,8 +45,8 @@ body {
 .toggle-container {
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 43px;
+  position: relative;
+  margin-top: 10px;
 }
 
 .button {
@@ -70,17 +70,7 @@ body {
 .title-text-container {
   width: 90%;
   max-width: 250px;
-  margin-top: 30px;
-  position: absolute;
-  top: 85px;
-}
-
-.memo-text-container {
-  width: 90%;
-  max-width: 250px;
-  margin-top: 30px;
-  position: absolute;
-  top: 130px;
+  position: relative;
 }
 
 .input-field,
@@ -147,6 +137,7 @@ body {
 
 .button-group {
   display: flex;
+  align-items: center;
   gap: 10px;
   justify-content: center;
   margin: 20px 0;
@@ -180,7 +171,7 @@ body {
   align-items: center;
   position: fixed;
   text-align: center;
-  top : 170px;
+  top: 170px;
 }
 
 .link-homepage {
@@ -193,4 +184,15 @@ body {
 
 .link-homepage:hover {
   text-decoration: underline;
+}
+
+.closeTabsCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 250px;
+  margin-bottom: 30px; /* 버튼 그룹과 간격 */
+  position: relative; /* 중앙 정렬 */
+  top: 45px;
 }
