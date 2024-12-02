@@ -3,6 +3,7 @@ const textInput = document.getElementById("textInput");
 const currentTabButton = document.getElementById("currentTabButton");
 const allTabsButton = document.getElementById("allTabsButton");
 const closeTabsButton = document.getElementById("closeTabsCheckbox");
+const homepageLink = document.getElementById("homepageLink");
 
 // 초기화
 let isSavingCurrentTab = true;
@@ -37,9 +38,13 @@ allTabsButton.addEventListener("click", () => {
   console.log("모든 탭 저장 모드");
 });
 
+homepageLink.addEventListener("click", () => {
+  window.open("https://www.linket.site/", "_blank");
+});
+
 submitButton.addEventListener("click", async () => {
   if (submitButton.innerText === "링킷 홈페이지") {
-    window.open("https://link-bucket.animal-squad.uk/", "_blank");
+    window.open("https://www.linket.site/", "_blank");
     return;
   }
 
@@ -94,16 +99,13 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     // 데이터 전송
-    const response = await fetch(
-      "https://www.link-bucket.animal-squad.uk/api/bucket",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const response = await fetch("https://www.linket.site/api/bucket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
     console.log("Status Code:", response.status);
 
@@ -113,7 +115,7 @@ submitButton.addEventListener("click", async () => {
     if (response.status === 401) {
       alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
       chrome.tabs.create({
-        url: "https://www.link-bucket.animal-squad.uk/api/auth/google",
+        url: "https://www.linket.site/api/auth/google",
       });
       return;
     }
@@ -131,9 +133,8 @@ submitButton.addEventListener("click", async () => {
       }
       // 1. 링크 열기
       const newTab = await new Promise((resolve) => {
-        chrome.tabs.create(
-          { url: "https://link-bucket.animal-squad.uk/" },
-          (tab) => resolve(tab)
+        chrome.tabs.create({ url: "https://www.linket.site/" }, (tab) =>
+          resolve(tab)
         );
       });
 
@@ -150,7 +151,7 @@ submitButton.addEventListener("click", async () => {
         submitButton.replaceWith(submitButton.cloneNode(true));
         const newButton = document.getElementById("submitButton");
         newButton.addEventListener("click", () => {
-          window.open("https://link-bucket.animal-squad.uk/", "_blank");
+          window.open("https://www.linket.site/", "_blank");
         });
       }, 1000);
     } else {
