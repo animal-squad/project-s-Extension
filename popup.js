@@ -99,7 +99,7 @@ submitButton.addEventListener("click", async () => {
     console.log("전송 데이터:", JSON.stringify(data, null, 2));
 
     // 데이터 전송
-    const response = await fetch("https://www.linket.site/api/bucket", {
+    const response = await fetch("https://www.linket.site/api/extension", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
